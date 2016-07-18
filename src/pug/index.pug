@@ -4,8 +4,22 @@ html
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width')
-    title Видос
+    title Киноглушитель
     meta(name='description', content='')
     link(rel='stylesheet' href='css/style.css')
-  body
-    h1 test
+  body(class='app')
+    header(class='header')
+      .header__logo
+      h1(class='header__title') Киноглушитель
+    content(class='container')
+      - var url = ['видео', 'субтитры', 'саундтрек'];
+      form(class='form')
+        for name in url
+          input(class='form__input' type='text' placeholder='Ссылка на ' + name)
+        button(class='form__button' type='submit') Преобразовать
+      video(id='video' controls width='400' height='300')
+        source(type='video/mp4' src='video/sherlock.mp4')
+      canvas(id='canvas' width='400' height='300')
+    footer
+      a(href='https://github.com/azat-io/shri-msk-2016-multimedia') Исходный код
+    script(src='js/main.js')
