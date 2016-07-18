@@ -1,46 +1,45 @@
 'use strict'
 
+import babel from 'gulp-babel'
 import browserReporter from 'postcss-browser-reporter'
 import browserSync from 'browser-sync'
+import concat from 'gulp-concat'
 import cssMqpacker from 'css-mqpacker'
 import cssNext from 'postcss-cssnext'
 import csso from 'postcss-csso'
 import gulp from 'gulp'
+import gutil from 'gulp-util'
 import imageOp from 'gulp-image-optimization'
+import inlineSVG from 'postcss-inline-svg'
 import cssImport from 'postcss-import'
 import postcss from 'gulp-postcss'
 import reporter from 'postcss-reporter'
 import responsiveType from 'postcss-responsive-type'
 import pug from 'gulp-pug'
 import short from 'postcss-short'
+import sourcemaps from 'gulp-sourcemaps'
 import stylelint from 'stylelint'
+import svgo from 'postcss-svgo'
 import uncss from 'postcss-uncss'
+import uglify from 'gulp-uglify'
 
-gulp.task('default', ['server'], () => {
-  gulp.watch('src/pug/**', (event) => {
-    gulp.run('pug')
-  })
-  gulp.watch('src/postcss/**', (event) => {
-    gulp.run('postcss')
-  })
-  gulp.watch('src/js/**', (event) => {
-    gulp.run('js')
-  })
-})
-
-gulp.task('build', () => {
-  gulp.run('pug', 'postcss', 'images', 'move')
+gulp.task('watch', () => {
+  gulp.watch('src/pug/**', gulp.series('pug'))
+  gulp.watch('src/postcss/**', gulp.series('postcss'))
+  gulp.watch('src/es6/**', gulp.series('es6'))
 })
 
 // Pug
 
 gulp.task('pug', () => {
-  gulp.src('src/pug/index.pug')
-    .pipe(pug({
-      pretty: false
-    }))
-    .pipe(gulp.dest('./dist/'))
-    .pipe(browserSync.stream())
+  return gulp.src('src/pug/index.pug')
+  .pipe(sourcemaps.init())
+  .pipe(pug({
+    pretty: false
+  }).on('error', gutil.log))
+  .pipe(sourcemaps.write('.'))
+  .pipe(gulp.dest('./dist/'))
+  .pipe(browserSync.stream())
 })
 
 // PostCSS
@@ -67,6 +66,8 @@ gulp.task('postcss', () => {
         disable: true
       }
     }),
+    inlineSVG,
+    svgo,
     cssNext({
       autoprefixer: ['ie >= 10', '> 2% in RU']
     }),
@@ -77,10 +78,27 @@ gulp.task('postcss', () => {
     reporter,
     csso
   ]
-  return gulp.src('src/postcss/style.css')
-    .pipe(postcss(processors))
-    .pipe(gulp.dest('./dist/css/'))
-    .pipe(browserSync.stream())
+  return gulp.src('./src/postcss/style.css')
+  .pipe(sourcemaps.init())
+  .pipe(postcss(processors).on('error', gutil.log))
+  .pipe(sourcemaps.write('.'))
+  .pipe(gulp.dest('./dist/css/'))
+  .pipe(browserSync.stream())
+})
+
+// JavaScript
+
+gulp.task('es6', () => {
+  return gulp.src(['./src/es6/main.es6'])
+  .pipe(sourcemaps.init())
+  .pipe(babel())
+  .pipe(concat('main.js'))
+  .pipe(uglify({
+    mangle: true
+  }))
+  .pipe(sourcemaps.write('.'))
+  .pipe(gulp.dest('./dist/js/'))
+  .pipe(browserSync.stream())
 })
 
 // Images
@@ -97,7 +115,7 @@ gulp.task('images', (cb) => {
 
 // Server
 
-gulp.task('server', () => {
+gulp.task('stream', () => {
   browserSync.init({
     server: {
       baseDir: './dist/'
@@ -105,3 +123,5 @@ gulp.task('server', () => {
     open: true
   })
 })
+
+gulp.task('default', gulp.series('pug', 'postcss', 'es6', gulp.parallel('stream', 'watch')))
