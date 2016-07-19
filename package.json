@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "./node_modules/.bin/gulp",
-    "lint:js": "eslint --ignore-path .gitignore --fix .",
-    "lint:css": "stylelint \"components/**/*.css\"",
+    "lint:js": "./node_modules/.bin/eslint --ignore-path .gitignore --fix .",
+    "lint:css": "stylelint \"src/**/*.css\"",
     "lint": "npm-run-all --parallel lint:*",
     "deploy": "./scripts/deploy.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
