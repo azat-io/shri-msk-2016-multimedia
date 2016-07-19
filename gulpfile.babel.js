@@ -7,6 +7,7 @@ import concat from 'gulp-concat'
 import cssMqpacker from 'css-mqpacker'
 import cssNext from 'postcss-cssnext'
 import csso from 'postcss-csso'
+import fontMagician from 'postcss-font-magician'
 import gulp from 'gulp'
 import gutil from 'gulp-util'
 import imageOp from 'gulp-image-optimization'
@@ -68,6 +69,7 @@ gulp.task('postcss', () => {
     }),
     inlineSVG,
     svgo,
+    fontMagician,
     cssNext({
       autoprefixer: ['ie >= 10', '> 2% in RU']
     }),
