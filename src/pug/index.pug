@@ -8,18 +8,44 @@ html
     meta(name='description', content='')
     link(rel='stylesheet' href='css/style.css')
   body(class='app')
+
     header(class='header')
       .header__logo
       h1(class='header__title') Киноглушитель
+
     content(class='container')
-      - var url = ['видео', 'субтитры', 'саундтрек'];
+      -
+        const urlList = [
+          {
+            title: 'Video',
+            id: 'video',
+            value: 'http://www.kinopoisk.ru/getlink.php?id=284167&type=trailer&link=https://kp.cdn.yandex.net/502838/kinopoisk.ru-Sherlock-284167.mp4'
+          }, {
+            title: 'Audio',
+            id: 'audio',
+            value: 'https://upload.wikimedia.org/wikipedia/commons/2/2c/The_Entertainer_-_1902_-_By_Scott_Joplin.ogg'
+          }, {
+            title: 'Subtitles',
+            id: 'subs',
+            value: 'https://raw.githubusercontent.com/shri-msk-2016/dz-multimedia/master/subs.srt'
+          }
+        ];
+
+      mixin inputElement(url)
+        label= url.title
+          input(class='form__input' type='url' id=url.id value=url.value)
+
       form(class='form')
-        for name in url
-          input(class='form__input' type='text' placeholder='Ссылка на ' + name)
-        button(class='form__button' type='submit') Преобразовать
-      video(id='video' controls width='400' height='300')
-        source(type='video/mp4' src='video/sherlock.mp4')
-      canvas(id='canvas' width='400' height='300')
-    footer
-      a(href='https://github.com/azat-io/shri-msk-2016-multimedia') Исходный код
+        for url in urlList
+          +inputElement(url)
+        button(type='submit') Преобразовать
+
+      .player
+        video(class='player__video' width='600' height='340' muted autoplay controls)
+          source(type='video/mp4' src='video/sherlock.mp4')
+        audio(class='player__audio' src='https://upload.wikimedia.org/wikipedia/commons/a/a6/Maple_Leaf_RagQ.ogg')
+        canvas(class='player__canvas' id='canvas')
+
+    //- footer
+    //-   a(href='https://github.com/azat-io/shri-msk-2016-multimedia') Исходный код
     script(src='js/main.js')
