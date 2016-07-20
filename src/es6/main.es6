@@ -34,11 +34,36 @@ video.addEventListener('play', () => {
       let v = 0.5 * r + 0.7 * g + 0.4 * b
       px[i] = px[i + 1] = px[i + 2] = v * value
     }
-
     ctx.putImageData(imageData, 0, 0)
 
-    // Рисуем кнопку Play
+    // Рисуем царапины на плёнке
+    ctx.beginPath()
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)'
+    let amountOfSkratches = Math.floor(Math.random() * (100 - 0 + 1))
+    amountOfSkratches -= 97
+    if (amountOfSkratches > 0) {
+      for (let i = 0; i < amountOfSkratches; i++) {
+        skratch()
+      }
+    }
+    ctx.fill()
+    function skratch () {
+      ctx.beginPath()
+      let startPoint = {
+        x: Math.floor(Math.random() * (canvas.width - 1)),
+        y: Math.floor(Math.random() * (canvas.height - 1))
+      }
 
+      let endPoint = {
+        x: startPoint.x,
+        y: Math.floor(Math.random() * (canvas.height - startPoint.y))
+      }
+      ctx.moveTo(startPoint.x, startPoint.y)
+      ctx.lineTo(endPoint.x, endPoint.y)
+      ctx.stroke()
+    }
+
+    // Рисуем кнопку Play
     // Задаём ширину и высоту кнопки
     let playButton = {
       width: 60,
