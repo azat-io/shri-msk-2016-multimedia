@@ -5,7 +5,8 @@
   "scripts": {
     "start": "./node_modules/.bin/gulp",
     "lint:js": "./node_modules/.bin/eslint --ignore-path .gitignore --fix .",
-    "lint:css": "stylelint \"src/**/*.css\"",
+    "lint:css": "stylelint \"./src/postcss/*.css\"",
+    "lint:pug": "./node_modules/.bin/pug-lint \"./src/pug/*.pug\"",
     "lint": "npm-run-all --parallel lint:*",
     "deploy": "./scripts/deploy.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -46,6 +47,8 @@
     "postcss-svgo": "2.1.4",
     "postcss-uncss": "0.14.0",
     "pug": "2.0.0-beta4",
+    "pug-lint": "2.3.0",
+    "pug-lint-config-clock": "2.0.0",
     "style-loader": "0.13.1",
     "stylelint": "7.0.3",
     "stylelint-config-standard": "11.0.0",
