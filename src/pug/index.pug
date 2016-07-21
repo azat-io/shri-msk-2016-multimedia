@@ -15,32 +15,6 @@ html
       .header__logo.header__logo_right
 
     content(class='container')
-      -
-        const urlList = [
-          {
-            title: 'видео',
-            id: 'video',
-            value: 'http://www.kinopoisk.ru/getlink.php?id=284167&type=trailer&link=https://kp.cdn.yandex.net/502838/kinopoisk.ru-Sherlock-284167.mp4'
-          }, {
-            title: 'аудио',
-            id: 'audio',
-            value: 'https://upload.wikimedia.org/wikipedia/commons/2/2c/The_Entertainer_-_1902_-_By_Scott_Joplin.ogg'
-          }, {
-            title: 'субтитры',
-            id: 'subs',
-            value: 'https://raw.githubusercontent.com/shri-msk-2016/dz-multimedia/master/subs.srt'
-          }
-        ];
-
-      mixin inputElement(url)
-        label= 'Ссылка на ' + url.title + ':'
-          input(class='form__input from_input_' + url.id type='url' id=url.id value=url.value)
-
-      form(class='form')
-        for url in urlList
-          +inputElement(url)
-        button(class='form__button' type='submit') Преобразовать
-
       .player
         input(type='file' class='test')
         video(class='player__video' muted controls)
