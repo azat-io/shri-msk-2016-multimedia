@@ -93,7 +93,11 @@ gulp.task('postcss', () => {
 gulp.task('es6', () => {
   return gulp.src([
     './src/es6/subtitles-parser.es6',
-    './src/es6/main.es6'
+    './src/es6/main.es6',
+    './src/es6/playbutton.es6',
+    './src/es6/grayscale.es6',
+    './src/es6/scratch.es6',
+    './src/es6/subtitles.es6'
   ])
   .pipe(sourcemaps.init())
   .pipe(babel())
