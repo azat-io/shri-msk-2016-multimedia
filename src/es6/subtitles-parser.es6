@@ -1,19 +1,6 @@
 var parser = (function () {
   var pItems = {}
 
-    /**
-     * Converts SubRip subtitles into array of objects
-     * [{
-     *     id:        `Number of subtitle`
-     *     startTime: `Start time of subtitle`
-     *     endTime:   `End time of subtitle
-     *     text: `Text of subtitle`
-     * }]
-     *
-     * @param  {String}  data SubRip suntitles string
-     * @param  {Boolean} ms   Optional: use milliseconds for startTime and endTime
-     * @return {Array}
-     */
      pItems.fromSrt = function (data, ms) {
        var useMs = ms ? true : false
 
@@ -40,13 +27,6 @@ var parser = (function () {
 
     return items
   }
-
-
-    /**
-     * Converts Array of objects created by this module to SubRip subtitles
-     * @param  {Array}  data
-     * @return {String}      SubRip subtitles string
-     */
 
   pItems.toSrt = function (data) {
     if (!data instanceof Array) return ''
@@ -108,7 +88,6 @@ var parser = (function () {
   return pItems
 })()
 
-// ignore exports for browser
 if (typeof exports === 'object') {
   module.exports = parser
 }
